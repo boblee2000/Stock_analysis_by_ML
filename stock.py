@@ -15,12 +15,16 @@ def get_average(k, time, name):
         sum = k.iloc[index-time:index+1,1:6].sum()
         out.loc[index] = {name + "-open":sum[0]/(time+1), name + "-close":sum[1]/(time+1),
                 name + "-high":sum[2]/(time+1), name + "-low":sum[3]/(time+1), name + "-volume":sum[4]/(time+1)}
+    out['date'] = k['date']
     return out
 
 def main ():
     k = ts.get_k_data('600385')
     print(k)
-    get_average(k, 8, "8day")
+    average = get_average(k, 8, "8day")
+    print(average)
+    k1 = pd.merge(k, average, on='date')
+    print(k1)
 
 if __name__ == '__main__':
     main()
